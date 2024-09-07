@@ -1,4 +1,4 @@
-import {createContext, useContext, useState} from "react";
+import {createContext, useContext, useMemo, useState} from "react";
 import {products} from "../data/Products";
 
 export const GlobalContext = createContext();
@@ -6,11 +6,11 @@ export const GlobalContext = createContext();
 export const GlobalProvider = ({children}) => {
   const [productInput, setProductInput] = useState("");
 
-  const temp = products;
-
-  const filterResult = temp.filter((item) =>
-    item.productName.toLowerCase().includes(productInput.toLowerCase().trim())
-  );
+  const filterResult = useMemo(() => {
+    return products.filter((item) =>
+      item.productName.toLowerCase().includes(productInput.toLowerCase().trim())
+    );
+  }, [productInput]);
 
   return (
     <GlobalContext.Provider
